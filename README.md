@@ -33,5 +33,5 @@ Der Server speichert die Daten anschließend dauerhaft ab.
 | Klaudio Shkalla  | README anpassen                           |                                                      | 0.5     | ja               |           |
 | Erind Vora       | Package-Struktur definieren               |                                                      | 1       | ja               |           |
 | Klevis Gjergjaj  | Erforderliche Klassen planen              |                                                      | 1       | ja               |           |
-| Klaudio Shkalla  | Leeres Projekt erstellen und pushen       | Leeres Projekt erstellen und ins Repository pushen   | 0.5     | nein             |           |
+| Klaudio Shkalla  | Leeres Projekt erstellen und pushen       | Leeres Projekt erstellen und ins Repository pushen   | 0.5     | ja               |           |
 | Alle             | Repository clonen                         |                                                      | 0.5     | nein             |           |
