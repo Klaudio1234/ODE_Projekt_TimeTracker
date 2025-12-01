@@ -34,4 +34,4 @@ Der Server speichert die Daten anschließend dauerhaft ab.
 | Erind Vora       | Package-Struktur definieren               |                                                      | 1       | ja               |           |
 | Klevis Gjergjaj  | Erforderliche Klassen planen              |                                                      | 1       | ja               |           |
 | Klaudio Shkalla  | Leeres Projekt erstellen und pushen       | Leeres Projekt erstellen und ins Repository pushen   | 0.5     | ja               |           |
-| Alle             | Repository clonen                         |                                                      | 0.5     | nein             |           |
+| Alle             | Repository clonen                         |                                                      | 0.5     | ja               |           |
