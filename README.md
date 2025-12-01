@@ -1,17 +1,19 @@
 # ODE_Projekt_TimeTracker
 
-Der **TimeTracker** ist eine Java-Anwendung, mit der Mitarbeiter ihre Arbeitszeit erfassen können.  
-Jeder Mitarbeiter kann verschiedene Aufgaben anlegen und für diese Aufgaben Arbeitszeiten buchen.  
-Eine Zeitbuchung entsteht, indem der Benutzer einen Timer startet, arbeitet und den Timer wieder stoppt.  
-Die gemessene Zeit wird anschließend einer Aufgabe zugeordnet und gespeichert.
+The **TimeTracker** is a Java application that allows employees to record their working hours.  
+Each employee can create different tasks and log time spent working on them.  
+A time entry is created by starting a timer, working, and then stopping the timer.  
+The recorded time is assigned to a task and saved.
 
-Die Anwendung besteht aus:
+The application consists of:
 
-- einem **Client**, der die Benutzeroberfläche bereitstellt  
-- einem **Server**, der als zentraler Speicher dient  
+- a **Client**, which provides the user interface  
+- a **Server**, which acts as the central data storage  
 
-Der Client überträgt alle erfassten Arbeitszeiten über eine **TCP-Verbindung** an den Server.  
-Der Server speichert die Daten anschließend dauerhaft ab.
+The client sends all recorded working times to the server via a **TCP connection**,  
+where the server stores the data persistently.
+
+---
 
 ## Team
 
@@ -19,19 +21,26 @@ Der Server speichert die Daten anschließend dauerhaft ab.
 - **Erind Vora** (ic25b012@technikum-wien.at)  
 - **Klevis Gjergjaj** (ic25b010@technikum-wien.at)
 
-## Meliensteine
+---
 
-| Name             | Feature / Aufgabe                         | Detail                                              | Stunden | Fertig / Merged? | Kommentar |
-|------------------|--------------------------------------------|------------------------------------------------------|---------|------------------|-----------|
-| Klaudio Shkalla  | 2 MustHaveFeatures definieren             |                                                      | 0.5     | ja               |           |
-| Erind Vora       | 2 MustHaveFeatures definieren             |                                                      | 0.5     | ja               |           |
-| Klevis Gjergjaj  | 2 MustHaveFeatures definieren             |                                                      | 0.5     | ja               |           |
-| Erind Vora       | ShouldHaveFeatures definieren             |                                                      | 1       | ja               |           |
-| Klaudio Shkalla  | NiceToHaveFeatures definieren             |                                                      | 1       | ja               |           |
-| Klevis Gjergjaj  | OverkillFeatures definieren               |                                                      | 1       | ja               |           |
-| Klaudio Shkalla  | Repository erstellen + Collaborators einfügen |                                                  | 0.5     | ja               |           |
-| Klaudio Shkalla  | README anpassen                           |                                                      | 0.5     | ja               |           |
-| Erind Vora       | Package-Struktur definieren               |                                                      | 1       | ja               |           |
-| Klevis Gjergjaj  | Erforderliche Klassen planen              |                                                      | 1       | ja               |           |
-| Klaudio Shkalla  | Leeres Projekt erstellen und pushen       | Leeres Projekt erstellen und ins Repository pushen   | 0.5     | ja               |           |
-| Alle             | Repository clonen                         |                                                      | 0.5     | ja               |           |
+## Milestones
+
+| Name             | Feature / Task                                        | Detail                                                | Hours | Done / Merged? | Comment |
+|------------------|--------------------------------------------------------|--------------------------------------------------------|-------|----------------|---------|
+| Klaudio Shkalla  | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
+| Erind Vora       | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
+| Klevis Gjergjaj  | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
+| Erind Vora       | Defined Should-Have Features                           |                                                        | 1     | yes            |         |
+| Klaudio Shkalla  | Defined Nice-to-Have Features                          |                                                        | 1     | yes            |         |
+| Klevis Gjergjaj  | Defined Overkill Features                              |                                                        | 1     | yes            |         |
+| Klaudio Shkalla  | Created Repository & Added Collaborators               |                                                        | 0.5   | yes            |         |
+| Klaudio Shkalla  | Updated README                                         |                                                        | 0.5   | yes            |         |
+| Erind Vora       | Defined Package Structure                              |                                                        | 1     | yes            |         |
+| Klevis Gjergjaj  | Planned Required Classes                               |                                                        | 1     | yes            |         |
+| Klaudio Shkalla  | Created Empty Project and Pushed It                    | Created empty project and pushed it to the repository  | 0.5   | yes            |         |
+| All              | Cloned Repository                                      |                                                        | 0.5   | yes            |         |
+| Klaudio Shkalla  | Added Classes of Model Package                         |                                                        | 0.5   | yes            |         |
+| Erind Vora       | Added Classes of Storage Package and Network Package   |                                                        | 0.5   | yes            |         |
+| Klevis Gjergjaj  | Added Classes of Exception Package                     |                                                        | 0.5   | yes            |         |
+
+---
