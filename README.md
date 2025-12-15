@@ -41,9 +41,9 @@ where the server stores the data persistently.
 | Klaudio Shkalla | Added Model Package Classes    |                                             | 0.5 | yes  |         |
 | Erind Vora      | Added Storage & Network Classes|                                             | 0.5 | yes  |         |
 | Klevis Gjergjaj | Added Exception Classes        |                                             | 0.5 | yes  |         |
-| Klevis Gjergjaj | Completed Model Package        | All model classes implemented               | 0.2 | no   |         |
-| Erind Vora      | Completed UI Package           | Timer and task UI classes                   | 0.2 | no   |         |
-| Klaudio Shkalla | Completed UI & Network Main    | Main classes implemented                    | 0.2 | no   |         |
+| Klevis Gjergjaj | Completed Model Package        |                                             | 0.2 | no   |         |
+| Erind Vora      | Completed UI Package           | Timer and task UI created                   | 0.2 | no   |         |
+| Klaudio Shkalla | Completed UI & Network Main    | Main classes created                        | 0.2 | no   |         |
 | Klaudio Shkalla | Implemented Task Base Class    | Abstract base class                         | 1   | no   |         |
 | Erind Vora      | Implemented Task Subclasses    | Design, Programming, Accounting             | 1   | no   |         |
 | Klevis Gjergjaj | Implemented Exception Classes  | NetworkException, StorageException          | 1   | no   |         |
