@@ -22,25 +22,33 @@ where the server stores the data persistently.
 - **Klevis Gjergjaj** (ic25b010@technikum-wien.at)
 
 ---
-
 ## Milestones
 
-| Name             | Feature / Task                                        | Detail                                                | Hours | Done / Merged? | Comment |
-|------------------|--------------------------------------------------------|--------------------------------------------------------|-------|----------------|---------|
-| Klaudio Shkalla  | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
-| Erind Vora       | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
-| Klevis Gjergjaj  | Defined 2 Must-Have Features                           |                                                        | 0.5   | yes            |         |
-| Erind Vora       | Defined Should-Have Features                           |                                                        | 1     | yes            |         |
-| Klaudio Shkalla  | Defined Nice-to-Have Features                          |                                                        | 1     | yes            |         |
-| Klevis Gjergjaj  | Defined Overkill Features                              |                                                        | 1     | yes            |         |
-| Klaudio Shkalla  | Created Repository & Added Collaborators               |                                                        | 0.5   | yes            |         |
-| Klaudio Shkalla  | Updated README                                         |                                                        | 0.5   | yes            |         |
-| Erind Vora       | Defined Package Structure                              |                                                        | 1     | yes            |         |
-| Klevis Gjergjaj  | Planned Required Classes                               |                                                        | 1     | yes            |         |
-| Klaudio Shkalla  | Created Empty Project and Pushed It                    | Created empty project and pushed it to the repository  | 0.5   | yes            |         |
-| All              | Cloned Repository                                      |                                                        | 0.5   | yes            |         |
-| Klaudio Shkalla  | Added Classes of Model Package                         |                                                        | 0.5   | yes            |         |
-| Erind Vora       | Added Classes of Storage Package and Network Package   |                                                        | 0.5   | yes            |         |
-| Klevis Gjergjaj  | Added Classes of Exception Package                     |                                                        | 0.5   | yes            |         |
+| Name            | Feature / Task                 | Detail                                      | Hrs | Done | Comment |
+|-----------------|--------------------------------|---------------------------------------------|-----|------|---------|
+| Klaudio Shkalla | Defined Must-Have Features     |                                             | 0.5 | yes  |         |
+| Erind Vora      | Defined Must-Have Features     |                                             | 0.5 | yes  |         |
+| Klevis Gjergjaj | Defined Must-Have Features     |                                             | 0.5 | yes  |         |
+| Erind Vora      | Defined Should-Have Features   |                                             | 1   | yes  |         |
+| Klaudio Shkalla | Defined Nice-to-Have Features  |                                             | 1   | yes  |         |
+| Klevis Gjergjaj | Defined Overkill Features      |                                             | 1   | yes  |         |
+| Klaudio Shkalla | Created Repository             |                                             | 0.5 | yes  |         |
+| Klaudio Shkalla | Updated README                 |                                             | 0.5 | yes  |         |
+| Erind Vora      | Defined Package Structure      |                                             | 1   | yes  |         |
+| Klevis Gjergjaj | Planned Required Classes       |                                             | 1   | yes  |         |
+| Klaudio Shkalla | Created Empty Project          | Initial project pushed to repository        | 0.5 | yes  |         |
+| All             | Cloned Repository              |                                             | 0.5 | yes  |         |
+| Klaudio Shkalla | Added Model Package Classes    |                                             | 0.5 | yes  |         |
+| Erind Vora      | Added Storage & Network Classes|                                             | 0.5 | yes  |         |
+| Klevis Gjergjaj | Added Exception Classes        |                                             | 0.5 | yes  |         |
+| Klevis Gjergjaj | Completed Model Package        | All model classes implemented               | 0.2 | no   |         |
+| Erind Vora      | Completed UI Package           | Timer and task UI classes                   | 0.2 | no   |         |
+| Klaudio Shkalla | Completed UI & Network Main    | Main classes implemented                    | 0.2 | no   |         |
+| Klaudio Shkalla | Implemented Task Base Class    | Abstract base class                         | 1   | no   |         |
+| Erind Vora      | Implemented Task Subclasses    | Design, Programming, Accounting             | 1   | no   |         |
+| Klevis Gjergjaj | Implemented Exception Classes  | NetworkException, StorageException          | 1   | no   |         |
+| Klaudio Shkalla | Implemented TimeEntry Class    |                                             | 2   | no   |         |
+| Erind Vora      | Implemented TimeManager Class  |                                             | 2   | no   |         |
+| Klevis Gjergjaj | Implemented FileStorage Class  |                                             | 2   | no   |         |
 
 ---
