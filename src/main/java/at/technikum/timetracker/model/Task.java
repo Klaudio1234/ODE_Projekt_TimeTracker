@@ -34,6 +34,20 @@ public abstract class Task {
         this.description = description == null ? "" : description.trim();
     }
 
+    public static Task fromStorage(UUID id, String type, String name, String desc) {
+        if (type == null) throw new IllegalArgumentException("Task type missing");
+
+        switch (type) {
+            case "PROGRAMMING":
+                return new ProgrammingTask(id, name, desc);
+            case "DESIGN":
+                return new DesignTask(id, name, desc);
+            case "ACCOUNTING":
+                return new AccountingTask(id, name, desc);
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + type);
+        }
+    }
 
     public abstract String getType();
 
