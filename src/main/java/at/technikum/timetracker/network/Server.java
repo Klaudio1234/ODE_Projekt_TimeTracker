@@ -1,4 +1,86 @@
 package at.technikum.timetracker.network;
 
-public class Server {
+import at.technikum.timetracker.exception.NetworkException;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+
+public class Server implements Closeable {
+    private final int port;
+    private final Consumer<String> onMessage;
+
+    private ServerSocket serverSocket;
+    private final ExecutorService pool = Executors.newCachedThreadPool();
+    private volatile boolean running;
+
+    private final CopyOnWriteArrayList<BufferedWriter> clientWriters = new CopyOnWriteArrayList<>();
+
+    private final Path serverEntriesFile = Path.of("network-data").resolve("server-entries.txt");
+    private final Object fileLock = new Object();
+
+    public Server(int port, Consumer<String> onMessage) {
+        this.port = port;
+        this.onMessage = onMessage == null ? (s -> {}) : onMessage;
+    }
+
+    private void appendServerEntry(String remote, String payload) {
+        String line = java.time.Instant.now().toString() + "|" + remote + "|" + payload;
+
+        synchronized (fileLock) {
+            try (BufferedWriter w = Files.newBufferedWriter(
+                    serverEntriesFile,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.APPEND
+            )) {
+                w.write(line);
+                w.newLine();
+            } catch (IOException ex) {
+                onMessage.accept("Server file write failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void broadcast(String message) {
+        if (message == null) return;
+
+        int ok = 0;
+        var toRemove = new java.util.ArrayList<BufferedWriter>();
+
+        for (BufferedWriter w : clientWriters) {
+            if (sendToWriter(w, message)) ok++;
+            else toRemove.add(w);
+        }
+
+        clientWriters.removeAll(toRemove);
+        onMessage.accept("TX broadcast: " + message + " (to " + ok + " clients)");
+    }
+
+    private boolean sendToWriter(BufferedWriter w, String message) {
+        try {
+            w.write(message);
+            w.newLine();
+            w.flush();
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public void close() {
+        running = false;
+        try { if (serverSocket != null) serverSocket.close(); } catch (IOException ignored) {}
+        pool.shutdownNow();
+        clientWriters.clear();
+        onMessage.accept("Server stopped");
+    }
 }
