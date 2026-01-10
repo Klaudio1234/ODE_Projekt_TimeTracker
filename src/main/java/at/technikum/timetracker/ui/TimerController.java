@@ -39,7 +39,8 @@ public class TimerController {
         this.client = client;
         this.onEntryAdded = onEntryAdded == null ? () -> {} : onEntryAdded;
 
-
+        build();
+        refreshTasksAndFixSelection();
     }
 
     public Parent getRoot() { return root; }
@@ -85,7 +86,6 @@ public class TimerController {
         });
     }
 
-
     private void start() {
         if (startTime != null) return;
 
@@ -122,6 +122,7 @@ public class TimerController {
 
         log.accept("Timer started: " + t.getName() + " (User: " + user + ")");
     }
+
     private void stop() {
         if (startTime == null) return;
 
@@ -175,12 +176,12 @@ public class TimerController {
         Platform.runLater(onEntryAdded);
     }
 
-
     private void stopIfRunning() {
         if (tickJob != null) tickJob.cancel(true);
         tickJob = null;
         startTime = null;
     }
+
     private static String safe(String s) {
         if (s == null) return "";
         return s.replace("|", " ").replace("\n", " ").trim();
@@ -200,5 +201,4 @@ public class TimerController {
         long s = seconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
     }
-
 }
