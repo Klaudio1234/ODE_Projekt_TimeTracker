@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
@@ -63,6 +64,44 @@ public class TimerController {
                 }
             }
         });
+    }
+
+
+    private void start() {
+        if (startTime != null) return;
+
+        String user = safe(userField.getText());
+        if (user.isEmpty()) {
+            showError("Please enter your name");
+            return;
+        }
+
+        Task t = taskBox.getValue();
+        if (t == null) {
+            showError("Select a task first");
+            return;
+        }
+
+        boolean exists = manager.getTasks().stream().anyMatch(x -> x.getId().equals(t.getId()));
+        if (!exists) {
+            showError("Selected task does not exist anymore. (It was deleted)");
+            taskBox.setValue(null);
+            return;
+        }
+
+        startTime = Instant.now();
+        status.setText("Timer: running for " + t.getName());
+
+        userField.setDisable(true);
+        taskBox.setDisable(true);
+
+        tickJob = ticker.scheduleAtFixedRate(() -> {
+            Instant now = Instant.now();
+            long sec = Duration.between(startTime, now).getSeconds();
+            Platform.runLater(() -> runningTime.setText(formatHMS(sec)));
+        }, 0, 1, TimeUnit.SECONDS);
+
+        log.accept("Timer started: " + t.getName() + " (User: " + user + ")");
     }
 
 
