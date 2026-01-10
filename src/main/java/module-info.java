@@ -1,3 +1,4 @@
 module $MODULE_NAME$ {
     requires $MODULE_NAME$;
+    requires javafx.controls;
 }
