@@ -71,5 +71,24 @@ public class TimerController {
         tickJob = null;
         startTime = null;
     }
+    private static String safe(String s) {
+        if (s == null) return "";
+        return s.replace("|", " ").replace("\n", " ").trim();
+    }
+
+    private void showError(String msg) {
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Timer");
+        a.setHeaderText("Timer");
+        a.setContentText(msg);
+        a.showAndWait();
+    }
+
+    private static String formatHMS(long seconds) {
+        long h = seconds / 3600;
+        long m = (seconds % 3600) / 60;
+        long s = seconds % 60;
+        return String.format("%02d:%02d:%02d", h, m, s);
+    }
 
 }
