@@ -3,6 +3,9 @@ package at.technikum.timetracker.ui;
 import at.technikum.timetracker.model.Task;
 import at.technikum.timetracker.model.TimeManager;
 import at.technikum.timetracker.network.Client;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -36,4 +39,38 @@ public class TimerController {
 
 
     }
+
+
+
+    public Parent getRoot() { return root; }
+
+
+    public void refreshTasksAndFixSelection() {
+        Platform.runLater(() -> {
+            Task selected = taskBox.getValue();
+
+            taskBox.getItems().setAll(manager.getTasks());
+
+            if (selected != null) {
+                boolean exists = manager.getTasks().stream()
+                        .anyMatch(t -> t.getId().equals(selected.getId()));
+
+                if (!exists) {
+                    stopIfRunning();
+                    taskBox.setValue(null);
+                    status.setText("Timer: stopped");
+                    runningTime.setText("00:00:00");
+                    log.accept("Timer selection cleared (task was deleted).");
+                }
+            }
+        });
+    }
+
+
+    private void stopIfRunning() {
+        if (tickJob != null) tickJob.cancel(true);
+        tickJob = null;
+        startTime = null;
+    }
+
 }
