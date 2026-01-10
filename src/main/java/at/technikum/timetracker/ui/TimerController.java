@@ -1,6 +1,7 @@
 package at.technikum.timetracker.ui;
 
 import at.technikum.timetracker.model.Task;
+import at.technikum.timetracker.model.TimeEntry;
 import at.technikum.timetracker.model.TimeManager;
 import at.technikum.timetracker.network.Client;
 import javafx.application.Platform;
@@ -102,6 +103,58 @@ public class TimerController {
         }, 0, 1, TimeUnit.SECONDS);
 
         log.accept("Timer started: " + t.getName() + " (User: " + user + ")");
+    }
+    private void stop() {
+        if (startTime == null) return;
+
+        String user = safe(userField.getText());
+        if (user.isEmpty()) {
+            showError("Please enter your name");
+            return;
+        }
+
+        Task t = taskBox.getValue();
+        if (t == null) {
+            showError("No task selected");
+            stopIfRunning();
+            return;
+        }
+
+        boolean exists = manager.getTasks().stream().anyMatch(x -> x.getId().equals(t.getId()));
+        if (!exists) {
+            stopIfRunning();
+            taskBox.setValue(null);
+            status.setText("Timer: stopped");
+            runningTime.setText("00:00:00");
+            log.accept("Timer stopped (task was deleted). No entry created.");
+            return;
+        }
+
+        Instant end = Instant.now();
+        TimeEntry entry = new TimeEntry(t.getId(), startTime, end, user);
+        manager.addEntry(entry);
+
+        userField.setDisable(false);
+        taskBox.setDisable(false); // optional
+
+        stopIfRunning();
+
+        status.setText("Timer: stopped");
+        runningTime.setText("00:00:00");
+
+        log.accept("Timer stopped: " + t.getName() + " by " + user + " (" + entry.getDurationSeconds() + "s)");
+
+        String line = "ENTRY|" + t.getId()
+                + "|" + entry.getStart().toString()
+                + "|" + entry.getEnd().toString()
+                + "|" + entry.getDurationSeconds()
+                + "|" + safe(user)
+                + "|" + safe(t.getType())
+                + "|" + safe(t.getName());
+
+        if (client != null) client.sendLineAsync(line);
+
+        Platform.runLater(onEntryAdded);
     }
 
 
