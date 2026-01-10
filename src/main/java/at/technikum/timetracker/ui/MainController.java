@@ -34,7 +34,6 @@ public class MainController {
     private final ScheduledExecutorService autosave =
             Executors.newSingleThreadScheduledExecutor();
 
-
     private final TaskListController taskListController;
     private final TaskEditorController taskEditorController;
     private final TimerController timerController;
@@ -75,11 +74,9 @@ public class MainController {
         startBackgroundThings();
     }
 
-
     public Parent getRoot() {
         return root;
     }
-
 
     private void buildUi() {
         Label title = new Label("ODE TimeTracker (unreleased)");
@@ -142,7 +139,6 @@ public class MainController {
         return box;
     }
 
-
     private void startBackgroundThings() {
         autosave.scheduleAtFixedRate(() -> {
             try {
@@ -153,6 +149,7 @@ public class MainController {
             }
         }, 20, 20, TimeUnit.SECONDS);
     }
+
 
     private TimeManager loadSafe() {
         try {
@@ -174,7 +171,6 @@ public class MainController {
             logFx("ERROR: " + ex.getMessage());
         }
     }
-
 
     private void refreshEntriesForSelectedTask() {
         Task task = taskListController.getSelected();
@@ -210,6 +206,7 @@ public class MainController {
         long s = seconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
     }
+
 
     public void shutdown() {
         saveSafe();
