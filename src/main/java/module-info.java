@@ -1,6 +1,10 @@
-module $MODULE_NAME$ {
-    requires $MODULE_NAME$;
+module at.technikum.timetracker {
     requires javafx.controls;
-    requires javafx.graphics;
-    requires java.desktop;
+    requires java.logging;
+
+    exports at.technikum.timetracker.ui;
+    exports at.technikum.timetracker.model;
+    exports at.technikum.timetracker.network;
+    exports at.technikum.timetracker.storage;
+    exports at.technikum.timetracker.exception;
 }
