@@ -42,9 +42,27 @@ public class TimerController {
 
     }
 
-
-
     public Parent getRoot() { return root; }
+
+    private void build() {
+        Label lbl = new Label("Timer (Start/Stop)");
+
+        userField.setPromptText("Your name");
+        taskBox.setPromptText("Select task");
+
+        Button btnStart = new Button("Start");
+        btnStart.setOnAction(e -> start());
+
+        Button btnStop = new Button("Stop");
+        btnStop.setOnAction(e -> stop());
+
+        HBox row = new HBox(8, userField, taskBox, btnStart, btnStop);
+        VBox.setVgrow(row, Priority.NEVER);
+
+        root.setPadding(new Insets(10));
+        root.getChildren().addAll(lbl, row, status, runningTime);
+        root.setStyle("-fx-border-color: #444; -fx-border-radius: 6; -fx-background-radius: 6;");
+    }
 
     public void refreshTasksAndFixSelection() {
         Platform.runLater(() -> {
