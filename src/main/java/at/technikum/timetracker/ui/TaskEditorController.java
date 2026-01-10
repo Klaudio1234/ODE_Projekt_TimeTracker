@@ -25,4 +25,26 @@ public class TaskEditorController {
         this.onChanged = onChanged == null ? () -> {} : onChanged;
 
     }
+
+
+    private Task createTask(UUID id, String type, String name, String desc) {
+        return switch (type) {
+            case "DESIGN" -> new DesignTask(id, name, desc);
+            case "ACCOUNTING" -> new AccountingTask(id, name, desc);
+            default -> new ProgrammingTask(id, name, desc);
+        };
+    }
+
+    private void clearFields() {
+        name.clear();
+        desc.clear();
+    }
+
+    private void showError(String msg) {
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Task");
+        a.setHeaderText("Task");
+        a.setContentText(msg);
+        a.showAndWait();
+    }
 }
