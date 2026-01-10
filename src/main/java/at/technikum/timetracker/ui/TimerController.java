@@ -44,7 +44,6 @@ public class TimerController {
 
     public Parent getRoot() { return root; }
 
-
     public void refreshTasksAndFixSelection() {
         Platform.runLater(() -> {
             Task selected = taskBox.getValue();
