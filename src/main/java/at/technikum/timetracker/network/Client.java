@@ -26,11 +26,11 @@ public class Client implements Closeable {
 
     public void connect(String host, int port) throws NetworkException {
         try {
-
             if (isConnected()) {
                 onMessage.accept("Already connected to server.");
                 return;
             }
+
             socket = new Socket(host, port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
@@ -50,7 +50,7 @@ public class Client implements Closeable {
         try {
             String line;
             while ((line = in.readLine()) != null) {
-                onMessage.accept("SERVER: " + line);
+                onMessage.accept(line);
             }
         } catch (IOException ex) {
             onMessage.accept("Connection closed: " + ex.getMessage());
