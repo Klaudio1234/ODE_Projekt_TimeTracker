@@ -33,26 +33,31 @@ public class ClientLogger implements Closeable {
     public void logAsync(String message) {
         if (message == null) return;
 
+        if (writer == null || writer.isShutdown() || writer.isTerminated()) return;
+
         String line = Instant.now().toString() + " | " + message;
 
-        writer.submit(() -> {
-            try (BufferedWriter w = Files.newBufferedWriter(
-                    logFile,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.WRITE,
-                    StandardOpenOption.APPEND
-            )) {
-                w.write(line);
-                w.newLine();
-            } catch (IOException ignored) {
+        try {
+            writer.submit(() -> {
+                try (BufferedWriter w = Files.newBufferedWriter(
+                        logFile,
+                        StandardCharsets.UTF_8,
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.WRITE,
+                        StandardOpenOption.APPEND
+                )) {
+                    w.write(line);
+                    w.newLine();
+                } catch (IOException ignored) {
+                }
+            });
+        } catch (java.util.concurrent.RejectedExecutionException ignored) {
 
-            }
-        });
+        }
     }
 
     @Override
     public void close() {
-        writer.shutdownNow();
+        if (writer != null) writer.shutdownNow();
     }
 }
