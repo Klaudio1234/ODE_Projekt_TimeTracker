@@ -92,7 +92,7 @@ public class MainController {
     }
 
     private void buildUi() {
-        Label title = new Label("ODE TimeTracker (unreleased)");
+        Label title = new Label("ODE TimeTracker");
         title.setFont(Font.font(18));
 
         Button btnSave = new Button("Save");
