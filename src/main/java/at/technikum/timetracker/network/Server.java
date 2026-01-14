@@ -76,11 +76,14 @@ public class Server implements Closeable {
             while ((line = in.readLine()) != null) {
                 onMessage.accept("RX " + remote + ": " + line);
 
-                if (line.startsWith("ENTRY|")) {
-                    appendServerEntry(remote, line);
+                if (isStateEvent(line)) {
+                    if (line.startsWith("ENTRY|")) {
+                        appendServerEntry(remote, line);
+                    }
+                    broadcast(line);
+                } else {
+                    sendToWriter(out, "OK|" + line);
                 }
-
-                sendToWriter(out, "OK|" + line);
             }
 
         } catch (IOException ex) {
@@ -92,6 +95,13 @@ public class Server implements Closeable {
         }
     }
 
+    private boolean isStateEvent(String line) {
+        if (line == null) return false;
+        return line.startsWith("ENTRY|")
+                || line.startsWith("TASK|")
+                || line.startsWith("UPDATE_TASK|")
+                || line.startsWith("DELETE_TASK|");
+    }
 
     private void appendServerEntry(String remote, String payload) {
         String line = java.time.Instant.now().toString() + "|" + remote + "|" + payload;
