@@ -3,6 +3,7 @@ package at.technikum.timetracker.ui;
 import at.technikum.timetracker.exception.NetworkException;
 import at.technikum.timetracker.exception.StorageException;
 import at.technikum.timetracker.model.Task;
+import at.technikum.timetracker.model.TimeEntry;
 import at.technikum.timetracker.model.TimeManager;
 import at.technikum.timetracker.network.Client;
 import at.technikum.timetracker.storage.ClientLogger;
@@ -15,24 +16,32 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 public class MainController {
 
+
     private final BorderPane root = new BorderPane();
+
 
     private final TextArea console = new TextArea();
     private final ListView<String> entryList = new ListView<>();
 
+
     private final FileStorage storage = FileStorage.defaultStorage();
     private final TimeManager manager;
 
+
     private final Client client;
+
 
     private final ClientLogger logger = ClientLogger.defaultLogger();
 
+
     private final ScheduledExecutorService autosave =
             Executors.newSingleThreadScheduledExecutor();
+
 
     private final TaskListController taskListController;
     private final TaskEditorController taskEditorController;
@@ -44,9 +53,11 @@ public class MainController {
         console.setEditable(false);
         console.setPrefRowCount(6);
 
-        client = new Client(this::logFx);
 
-        taskListController = new TaskListController(manager, this::logFx);
+        client = new Client(this::onClientLine);
+
+
+        taskListController = new TaskListController(manager, this::logFx, client);
 
         timerController = new TimerController(
                 manager,
@@ -60,9 +71,11 @@ public class MainController {
             refreshEntriesForSelectedTask();
         });
 
+
         taskEditorController = new TaskEditorController(
                 manager,
                 this::logFx,
+                client,
                 () -> {
                     taskListController.refresh();
                     timerController.refreshTasksAndFixSelection();
@@ -79,7 +92,7 @@ public class MainController {
     }
 
     private void buildUi() {
-        Label title = new Label("ODE TimeTracker");
+        Label title = new Label("ODE TimeTracker (unreleased)");
         title.setFont(Font.font(18));
 
         Button btnSave = new Button("Save");
@@ -150,7 +163,6 @@ public class MainController {
         }, 20, 20, TimeUnit.SECONDS);
     }
 
-
     private TimeManager loadSafe() {
         try {
             TimeManager m = storage.load();
@@ -186,11 +198,104 @@ public class MainController {
     }
 
 
+    private void onClientLine(String line) {
+
+        logFx(line);
+
+
+        if (line == null) return;
+        if (line.startsWith("TASK|")
+                || line.startsWith("UPDATE_TASK|")
+                || line.startsWith("DELETE_TASK|")
+                || line.startsWith("ENTRY|")) {
+            applyEvent(line);
+        }
+    }
+
+
+    private void applyEvent(String payload) {
+        try {
+            if (payload.startsWith("DELETE_TASK|")) {
+                String[] p = payload.split("\\|", -1);
+                UUID id = UUID.fromString(p[1]);
+
+                manager.findTask(id).ifPresent(task -> {
+                    manager.deleteTask(task);
+                    Platform.runLater(this::refreshAllUi);
+                });
+                return;
+            }
+
+            if (payload.startsWith("UPDATE_TASK|")) {
+                String[] p = payload.split("\\|", -1);
+                UUID id = UUID.fromString(p[1]);
+                String newName = p.length >= 3 ? p[2] : "";
+                String newDesc = p.length >= 4 ? p[3] : "";
+
+                manager.findTask(id).ifPresent(task -> {
+                    manager.updateTask(task, newName, newDesc);
+                    Platform.runLater(this::refreshAllUi);
+                });
+                return;
+            }
+
+            if (payload.startsWith("TASK|")) {
+
+                String[] p = payload.split("\\|", -1);
+                UUID id = UUID.fromString(p[1]);
+                String type = p.length >= 3 ? p[2] : "";
+                String name = p.length >= 4 ? p[3] : "";
+                String desc = p.length >= 5 ? p[4] : "";
+
+
+                if (manager.findTask(id).isEmpty()) {
+                    manager.addTask(Task.fromStorage(id, type, name, desc));
+                    Platform.runLater(this::refreshAllUi);
+                }
+                return;
+            }
+
+            if (payload.startsWith("ENTRY|")) {
+
+
+                String[] p = payload.split("\\|", -1);
+                UUID taskId = UUID.fromString(p[1]);
+                Instant start = Instant.parse(p[2]);
+                Instant end = Instant.parse(p[3]);
+
+                String user = (p.length >= 6) ? p[5] : "";
+
+
+                boolean exists = manager.getEntries().stream().anyMatch(e ->
+                        e.getTaskId().equals(taskId)
+                                && e.getStart().equals(start)
+                                && e.getEnd().equals(end)
+                                && e.getUserName().equals(user)
+                );
+
+                if (!exists) {
+                    manager.addEntry(new TimeEntry(taskId, start, end, user));
+                    Platform.runLater(this::refreshAllUi);
+                }
+            }
+        } catch (Exception ex) {
+            logFx("APPLY_EVENT_ERROR: " + ex.getMessage());
+        }
+    }
+
+
+    private void refreshAllUi() {
+        taskListController.refresh();
+        timerController.refreshTasksAndFixSelection();
+        refreshEntriesForSelectedTask();
+    }
+
+
+
     private void logFx(String msg) {
         logger.logAsync(msg);
         Platform.runLater(() -> console.appendText(msg + "\n"));
     }
-
 
     private void showError(String title, String msg) {
         Alert a = new Alert(Alert.AlertType.ERROR);
@@ -206,7 +311,6 @@ public class MainController {
         long s = seconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
     }
-
 
     public void shutdown() {
         saveSafe();

@@ -1,6 +1,7 @@
 package at.technikum.timetracker.ui;
 
 import at.technikum.timetracker.model.*;
+import at.technikum.timetracker.network.Client; // ADDED
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -16,14 +17,18 @@ public class TaskEditorController {
     private final Consumer<String> log;
     private final Runnable onChanged;
 
+    private final Client client;
+
     private final ComboBox<String> type = new ComboBox<>();
     private final TextField name = new TextField();
     private final TextArea desc = new TextArea();
     private final TextField editTaskId = new TextField();
 
-    public TaskEditorController(TimeManager manager, Consumer<String> log, Runnable onChanged) {
+
+    public TaskEditorController(TimeManager manager, Consumer<String> log, Client client, Runnable onChanged) {
         this.manager = manager;
         this.log = log == null ? (s -> {}) : log;
+        this.client = client;
         this.onChanged = onChanged == null ? () -> {} : onChanged;
         build();
     }
@@ -46,13 +51,21 @@ public class TaskEditorController {
         Button btnCreate = new Button("Create Task");
         btnCreate.setOnAction(e -> {
 
-            //Admin required
             if (!AdminAuth.requireAdmin("Create Task")) return;
 
             try {
                 Task t = createTask(UUID.randomUUID(), type.getValue(), name.getText(), desc.getText());
                 manager.addTask(t);
                 log.accept("Task created: " + t.getName() + " (" + t.getType() + ")");
+
+
+                if (client != null) {
+                    client.sendLineAsync("TASK|" + t.getId()
+                            + "|" + safe(t.getType())
+                            + "|" + safe(t.getName())
+                            + "|" + safe(t.getDescription()));
+                }
+
                 clearFields();
                 onChanged.run();
             } catch (Exception ex) {
@@ -80,7 +93,6 @@ public class TaskEditorController {
         Button btnApplyEdit = new Button("Apply Edit (by ID)");
         btnApplyEdit.setOnAction(e -> {
 
-            //Admin required
             if (!AdminAuth.requireAdmin("Edit Task")) return;
 
             try {
@@ -96,9 +108,25 @@ public class TaskEditorController {
                     manager.deleteTask(t);
                     manager.addTask(replacement);
                     log.accept("Task type changed and replaced: " + replacement.getName() + " (" + replacement.getType() + ")");
+
+
+                    if (client != null) {
+                        client.sendLineAsync("DELETE_TASK|" + t.getId());
+                        client.sendLineAsync("TASK|" + replacement.getId()
+                                + "|" + safe(replacement.getType())
+                                + "|" + safe(replacement.getName())
+                                + "|" + safe(replacement.getDescription()));
+                    }
                 } else {
                     manager.updateTask(t, name.getText(), desc.getText());
                     log.accept("Task updated: " + t.getName() + " (" + t.getType() + ")");
+
+
+                    if (client != null) {
+                        client.sendLineAsync("UPDATE_TASK|" + t.getId()
+                                + "|" + safe(name.getText())
+                                + "|" + safe(desc.getText()));
+                    }
                 }
 
                 onChanged.run();
@@ -127,6 +155,12 @@ public class TaskEditorController {
     private void clearFields() {
         name.clear();
         desc.clear();
+    }
+
+
+    private static String safe(String s) {
+        if (s == null) return "";
+        return s.replace("|", " ").replace("\n", " ").trim();
     }
 
     private void showError(String msg) {

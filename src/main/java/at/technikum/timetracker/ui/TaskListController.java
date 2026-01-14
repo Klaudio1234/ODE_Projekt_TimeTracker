@@ -2,6 +2,7 @@ package at.technikum.timetracker.ui;
 
 import at.technikum.timetracker.model.Task;
 import at.technikum.timetracker.model.TimeManager;
+import at.technikum.timetracker.network.Client;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -18,15 +19,19 @@ public class TaskListController {
     private final TimeManager manager;
     private final Consumer<String> log;
 
+    private final Client client;
+
     private final TextField search = new TextField();
     private final ListView<Task> list = new ListView<>();
 
     private Consumer<Task> onSelectionChanged = t -> {};
     private Runnable onTasksChanged = () -> {};
 
-    public TaskListController(TimeManager manager, Consumer<String> log) {
+
+    public TaskListController(TimeManager manager, Consumer<String> log, Client client) {
         this.manager = manager;
         this.log = log == null ? (s -> {}) : log;
+        this.client = client;
         build();
         refresh();
     }
@@ -60,6 +65,9 @@ public class TaskListController {
 
             manager.deleteTask(t);
             log.accept("Task deleted: " + t.getName() + " (" + t.getType() + ")");
+
+
+            if (client != null) client.sendLineAsync("DELETE_TASK|" + t.getId());
 
             refresh();
             onSelectionChanged.accept(null);
