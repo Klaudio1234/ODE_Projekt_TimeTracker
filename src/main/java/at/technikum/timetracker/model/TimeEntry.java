@@ -18,7 +18,7 @@ public class TimeEntry {
     private final String userName;
 
     private static final DateTimeFormatter TIME_FMT =
-            DateTimeFormatter.ofPattern("HH:mm:ss")
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     .withZone(ZoneId.systemDefault());
 
     public TimeEntry(UUID id, UUID taskId, Instant start, Instant end, String userName) {
@@ -84,7 +84,7 @@ public class TimeEntry {
         String who = userName.isBlank() ? "" : (userName + " | ");
 
         return String.format(
-                "%s%s → %s | %02d:%02d:%02d",
+                "%s%s - %s | %02d:%02d:%02d",
                 who,
                 TIME_FMT.format(start),
                 TIME_FMT.format(end),
