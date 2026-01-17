@@ -85,6 +85,7 @@ public class Server implements Closeable {
                     sendToWriter(out, "OK|" + line);
                 }
             }
+            onMessage.accept("Client closed the Connection with the Server!!!!!!!!!!!!" + remote );
 
         } catch (IOException ex) {
             onMessage.accept("Client disconnected (" + remote + "): " + ex.getMessage());
