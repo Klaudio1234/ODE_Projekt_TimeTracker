@@ -43,7 +43,6 @@ public class TimeEntry {
         this(UUID.randomUUID(), taskId, start, end, userName);
     }
 
-    // GETTER
     public UUID getId() {
         return id;
     }
@@ -64,7 +63,6 @@ public class TimeEntry {
         return userName;
     }
 
-    // LOGIK
     public Duration getDuration() {
         return Duration.between(start, end);
     }
@@ -73,7 +71,6 @@ public class TimeEntry {
         return getDuration().getSeconds();
     }
 
-    // DISPLAY
     @Override
     public String toString() {
         long total = getDurationSeconds();
