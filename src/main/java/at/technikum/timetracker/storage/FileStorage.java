@@ -30,7 +30,6 @@ public class FileStorage {
         return dataFile;
     }
 
-    // SAVE
     public void save(TimeManager manager) throws StorageException {
         try {
             Files.createDirectories(dataFile.getParent());
@@ -67,7 +66,6 @@ public class FileStorage {
         }
     }
 
-    // LOAD
 
     public TimeManager load() throws StorageException {
         TimeManager manager = new TimeManager();
@@ -123,8 +121,6 @@ public class FileStorage {
 
         return manager;
     }
-
-    // HELPERS
 
     private static Task findTask(TimeManager manager, UUID taskId) {
         for (Task t : manager.getTasks()) {
