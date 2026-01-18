@@ -62,7 +62,7 @@ where the server stores the data persistently.
 | Klaudio Shkalla | Implemented TaskEditorController   | Clear task, fields, showError                       | 2   | yes  |         |
 | Klaudio Shkalla | Implemented MainController         | Basic UI, features                                  | 2   | yes  |         |
 | Erind Vora      | Implemented MainController         | Features                                            | 2   | yes  |         |
-| Klaudio Shkalla | Changed Time Format in Controller  |                                                     | 0.2 | yes  |         |
+| Klaudio Shkalla | Timeformat in TimeEntry changed    |                                                     | 0.2 | yes  |         |
 | Klevis Gjergjaj | Added isConnected() Method         |                                                     | 0.5 | yes  |         |
 | Klevis Gjergjaj | Added Client Sync Changes          |                                                     | 0.5 | yes  |         |
 | Erind Vora      | Added Synchronization Changes      |                                                     | 0.5 | yes  |         |
