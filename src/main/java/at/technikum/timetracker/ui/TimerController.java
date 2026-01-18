@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -29,7 +30,11 @@ public class TimerController {
     private final Label status = new Label("Timer: stopped");
     private final Label runningTime = new Label("00:00:00");
 
+
     private Instant startTime;
+    private UUID runningTaskId;
+    private String runningUser;
+
     private final ScheduledExecutorService ticker = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> tickJob;
 
@@ -71,16 +76,27 @@ public class TimerController {
 
             taskBox.getItems().setAll(manager.getTasks());
 
-            if (selected != null) {
-                boolean exists = manager.getTasks().stream()
-                        .anyMatch(t -> t.getId().equals(selected.getId()));
 
-                if (!exists) {
+            if (runningTaskId != null) {
+                boolean runningExists = manager.getTasks().stream()
+                        .anyMatch(t -> t.getId().equals(runningTaskId));
+
+                if (!runningExists) {
                     stopIfRunning();
                     taskBox.setValue(null);
                     status.setText("Timer: stopped");
                     runningTime.setText("00:00:00");
-                    log.accept("Timer selection cleared (task was deleted).");
+                    userField.setDisable(false);
+                    taskBox.setDisable(false);
+                    log.accept("Timer stopped (running task was deleted).");
+                }
+            }
+
+            if (selected != null) {
+                boolean exists = manager.getTasks().stream()
+                        .anyMatch(t -> t.getId().equals(selected.getId()));
+                if (!exists) {
+                    taskBox.setValue(null);
                 }
             }
         });
@@ -108,6 +124,9 @@ public class TimerController {
             return;
         }
 
+        runningTaskId = t.getId();
+        runningUser = user;
+
         startTime = Instant.now();
         status.setText("Timer: running for " + t.getName());
 
@@ -124,7 +143,18 @@ public class TimerController {
     }
 
     private void stop() {
+
         if (startTime == null) return;
+
+        if (runningTaskId == null) {
+            stopIfRunning();
+            status.setText("Timer: stopped");
+            runningTime.setText("00:00:00");
+            userField.setDisable(false);
+            taskBox.setDisable(false);
+            log.accept("Timer stopped: internal state missing (runningTaskId was null).");
+            return;
+        }
 
         String user = safe(userField.getText());
         if (user.isEmpty()) {
@@ -132,20 +162,15 @@ public class TimerController {
             return;
         }
 
-        Task t = taskBox.getValue();
-        if (t == null) {
-            showError("No task selected");
-            stopIfRunning();
-            return;
-        }
+        Task t = manager.findTask(runningTaskId).orElse(null);
 
-        boolean exists = manager.getTasks().stream().anyMatch(x -> x.getId().equals(t.getId()));
-        if (!exists) {
+        if (t == null) {
             stopIfRunning();
-            taskBox.setValue(null);
             status.setText("Timer: stopped");
             runningTime.setText("00:00:00");
-            log.accept("Timer stopped (task was deleted). No entry created.");
+            userField.setDisable(false);
+            taskBox.setDisable(false);
+            log.accept("Timer stopped (task was deleted while running). No entry created.");
             return;
         }
 
@@ -154,7 +179,7 @@ public class TimerController {
         manager.addEntry(entry);
 
         userField.setDisable(false);
-        taskBox.setDisable(false); // optional
+        taskBox.setDisable(false);
 
         stopIfRunning();
 
@@ -180,6 +205,8 @@ public class TimerController {
         if (tickJob != null) tickJob.cancel(true);
         tickJob = null;
         startTime = null;
+        runningTaskId = null;
+        runningUser = null;
     }
 
     private static String safe(String s) {
