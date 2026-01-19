@@ -41,15 +41,15 @@ where the server stores the data persistently.
 | Klaudio Shkalla | Added Model Package Classes        |                                                     | 0.5 | yes  |         |
 | Erind Vora      | Added Storage & Network Classes    |                                                     | 0.5 | yes  |         |
 | Klevis Gjergjaj | Added Exception Classes            |                                                     | 0.5 | yes  |         |
-| Klevis Gjergjaj | Completed Model Package            | All model classes implemented                       | 0.2 | no   |         |
-| Erind Vora      | Completed UI Package               | Timer and task UI classes                           | 0.2 | no   |         |
-| Klaudio Shkalla | Completed UI & Network Main        | Main classes implemented                            | 0.2 | no   |         |
-| Klaudio Shkalla | Implemented Task Base Class        | Abstract base class                                 | 1   | no   |         |
-| Erind Vora      | Implemented Task Subclasses        | Design, Programming, Accounting                     | 1   | no   |         |
-| Klevis Gjergjaj | Implemented Exception Classes      | NetworkException, StorageException                  | 1   | no   |         |
-| Klaudio Shkalla | Implemented TimeEntry Class        |                                                     | 2   | no   |         |
-| Erind Vora      | Implemented TimeManager Class      |                                                     | 2   | no   |         |
-| Klevis Gjergjaj | Implemented FileStorage Class      |                                                     | 2   | no   |         |
+| Klevis Gjergjaj | Completed Model Package            | All model classes implemented                       | 0.2 | yes  |         |
+| Erind Vora      | Completed UI Package               | Timer and task UI classes                           | 0.2 | yes  |         |
+| Klaudio Shkalla | Completed UI & Network Main        | Main classes implemented                            | 0.2 | yes  |         |
+| Klaudio Shkalla | Implemented Task Base Class        | Abstract base class                                 | 1   | yes  |         |
+| Erind Vora      | Implemented Task Subclasses        | Design, Programming, Accounting                     | 1   | yes  |         |
+| Klevis Gjergjaj | Implemented Exception Classes      | NetworkException, StorageException                  | 1   | yes  |         |
+| Klaudio Shkalla | Implemented TimeEntry Class        |                                                     | 2   | yes  |         |
+| Erind Vora      | Implemented TimeManager Class      |                                                     | 2   | yes  |         |
+| Klevis Gjergjaj | Implemented FileStorage Class      |                                                     | 2   | yes  |         |
 | Klevis Gjergjaj | Implemented Client Class           |                                                     | 2   | yes  |         |
 | Klaudio Shkalla | Implemented Server Class           |                                                     | 2   | yes  |         |
 | Erind Vora      | Implemented Server Main            |                                                     | 2   | yes  |         |
