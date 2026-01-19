@@ -1,7 +1,7 @@
 package at.technikum.timetracker.ui;
 
 import at.technikum.timetracker.model.*;
-import at.technikum.timetracker.network.Client; // ADDED
+import at.technikum.timetracker.network.Client;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
