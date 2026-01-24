@@ -42,10 +42,10 @@ public class TaskEditorController {
         type.getSelectionModel().selectFirst();
 
         name.setPromptText("Task name");
-        desc.setPromptText("Description (should-have)");
+        desc.setPromptText("Description");
         desc.setPrefRowCount(3);
 
-        editTaskId.setPromptText("Task ID to edit (optional)");
+        editTaskId.setPromptText("Task ID to edit");
         editTaskId.setEditable(true);
 
         Button btnCreate = new Button("Create Task");
