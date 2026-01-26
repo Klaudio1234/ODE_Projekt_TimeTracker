@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -127,7 +128,7 @@ public class Server implements Closeable {
         if (message == null) return;
 
         int ok = 0;
-        var toRemove = new java.util.ArrayList<BufferedWriter>();
+        var toRemove = new ArrayList<BufferedWriter>();
 
         for (BufferedWriter w : clientWriters) {
             if (sendToWriter(w, message)) ok++;
