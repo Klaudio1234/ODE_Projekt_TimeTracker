@@ -8,6 +8,7 @@ import java.nio.file.*;
 import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 
 public class ClientLogger implements Closeable {
 
@@ -51,7 +52,7 @@ public class ClientLogger implements Closeable {
                 } catch (IOException ignored) {
                 }
             });
-        } catch (java.util.concurrent.RejectedExecutionException ignored) {
+        } catch (RejectedExecutionException ignored) {
 
         }
     }
